@@ -1,5 +1,7 @@
 # Yolov5 object detection with FastAPI
 
+Credit: originally a fork of [OurNemanja/YOLOv5-fastapi-celery-redis-rabbitm](https://github.com/OurNemanja/YOLOv5-fastapi-celery-redis-rabbitmq)
+
 Application to expose Yolov5 model using FastAPI. A demo web app is provided which allows batch upload and processing. Run the application with `docker-compose up`
 
 - [FastAPI](https://fastapi.tiangolo.com): python framework for building APIs
