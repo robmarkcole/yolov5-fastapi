@@ -2,7 +2,7 @@
 
 Credit: originally a fork of [OurNemanja/YOLOv5-fastapi-celery-redis-rabbitm](https://github.com/OurNemanja/YOLOv5-fastapi-celery-redis-rabbitmq)
 
-Application to expose Yolov5 model using FastAPI. A demo web app is provided which allows batch upload and processing. Run the application with `docker-compose up`
+Application to expose Yolov5 model using FastAPI. Run the application with `docker-compose up`
 
 - [FastAPI](https://fastapi.tiangolo.com): python framework for building APIs
 - [Celery](https://celeryproject.org): task queue with focus on real-time processing
@@ -22,13 +22,10 @@ This will start:
 - rabbitmq: message broker
 - redis: in-memory database on port 6379, simply used by rabbitmq
 - worker: application logic (Yolo model, FastAPI and Celery) on port 8000
-- webapp: demo application on port 80
 
-1. Open the demo webapp.
-http://localhost/
-<img src=img/webapp.gif>
+Perform some API requests using the integrated Swagger UI http://localhost:8000/docs
 
-2. Perform some API requests using the integrated Swagger UI http://localhost:8000/docs
+<img src=img/doc.gif>
 
 API Services available
 | Endpoint | Method | Description
