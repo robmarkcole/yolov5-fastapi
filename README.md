@@ -2,7 +2,7 @@
 
 Credit: originally a fork of [OurNemanja/YOLOv5-fastapi-celery-redis-rabbitm](https://github.com/OurNemanja/YOLOv5-fastapi-celery-redis-rabbitmq)
 
-Application to expose Yolov5 model using FastAPI. Run the application with `docker-compose up`
+Application to expose Yolov5 model using FastAPI. Inferencing requests are submitted to a Celery task queue, and an asynchronous API is available for polling for results. This approach is described in detail in the excellent article [Serving ML Models in Production with FastAPI and Celery](https://towardsdatascience.com/deploying-ml-models-in-production-with-fastapi-and-celery-7063e539a5db) by [@jonathanreadshaw](https://github.com/jonathanreadshaw/ServingMLFastCelery)
 
 - [FastAPI](https://fastapi.tiangolo.com): python framework for building APIs
 - [Celery](https://celeryproject.org): task queue with focus on real-time processing
