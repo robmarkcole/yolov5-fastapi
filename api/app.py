@@ -13,11 +13,13 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from models import Prediction, Task
 from pydantic.typing import List
+import time
 
 from celery_tasks.tasks import predict_image
 
 UPLOAD_FOLDER = "uploads"
 STATIC_FOLDER = "static/results"
+OBJ_DETECTION_URL = "/v1/vision/detection"
 
 isdir = os.path.isdir(UPLOAD_FOLDER)
 if not isdir:
@@ -105,3 +107,32 @@ async def status(task_id: str):
         status_code=200,
         content={"task_id": str(task_id), "status": task.status, "result": ""},
     )
+
+
+@app.post(OBJ_DETECTION_URL, response_model=Prediction)
+async def predict_object(file: UploadFile = File(...)):
+    try:
+        name = str(uuid.uuid4()).split("-")[0]
+        ext = file.filename.split(".")[-1]  # e.g. .jpg
+        file_name = f"{UPLOAD_FOLDER}/{name}.{ext}"
+        with open(file_name, "wb+") as f:  # write to uploads
+            f.write(file.file.read())
+        f.close()
+
+        # start task prediction
+        task_id = predict_image.delay(os.path.join("api", file_name))
+        task = AsyncResult(task_id)
+
+        task_result = task.get() # A blocking call
+        result = task_result.get("result") 
+        return JSONResponse(
+            status_code=200,
+            content={
+                "task_id": str(task_id),
+                "status": task_result.get("status"),
+                "result": result,
+            },
+        )
+    except Exception as ex:
+        logging.info(ex)
+        return JSONResponse(status_code=400, content=[])
